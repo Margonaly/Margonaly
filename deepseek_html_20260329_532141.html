@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Margonaly Bot - Automatyzacja dla Margonem</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Poppins & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 20%, #0a0f1e, #03060c);
+            color: #eef2ff;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* glassmorphism core */
+        .glass-card {
+            background: rgba(15, 25, 45, 0.55);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 2rem;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease, border-color 0.2s;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(76, 175, 80, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+        }
+
+        /* header */
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            padding: 2rem 2rem;
+            background: rgba(8, 14, 26, 0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .hero-text h1 {
+            font-size: 3.2rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #4caf50);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #4caf5022;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            border-left: 3px solid #4caf50;
+            margin-top: 0.75rem;
+        }
+
+        .slogan {
+            font-size: 1.2rem;
+            color: #b9c7e0;
+            margin-top: 0.75rem;
+        }
+
+        .btn-download {
+            background: linear-gradient(105deg, #2e7d32, #4caf50);
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 8px 18px rgba(76, 175, 80, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-download:hover {
+            background: linear-gradient(105deg, #1b5e20, #43a047);
+            transform: scale(1.02);
+            box-shadow: 0 12px 24px rgba(76, 175, 80, 0.5);
+        }
+
+        /* section headers */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: inline-block;
+            background: linear-gradient(120deg, #eef2ff, #4caf50);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            border-left: 4px solid #ff9800;
+            padding-left: 1rem;
+        }
+
+        /* features grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2.5rem 0;
+        }
+
+        .feature-card {
+            padding: 1.8rem;
+            text-align: center;
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: #4caf50;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* installation steps */
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .step {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            border: 1px solid rgba(255, 152, 0, 0.3);
+        }
+
+        .step-number {
+            width: 42px;
+            height: 42px;
+            background: #ff9800;
+            color: #0a0f1e;
+            font-weight: bold;
+            font-size: 1.4rem;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+        }
+
+        /* config & requirements */
+        .two-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .config-box, .req-box {
+            padding: 1.8rem;
+        }
+
+        .config-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .config-list li {
+            margin: 1rem 0;
+            border-bottom: 1px dashed rgba(76, 175, 80, 0.3);
+            padding-bottom: 0.6rem;
+        }
+
+        .config-list strong {
+            color: #ff9800;
+        }
+
+        .req-list {
+            list-style: none;
+        }
+
+        .req-list li {
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .req-list i {
+            width: 28px;
+            color: #4caf50;
+        }
+
+        /* screenshots placeholder */
+        .screenshots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        .screenshot-placeholder {
+            background: linear-gradient(145deg, #111a2b, #07111f);
+            border-radius: 1.5rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            width: 280px;
+            border: 1px solid #2c3e4e;
+            transition: all 0.2s;
+        }
+        .screenshot-placeholder i {
+            font-size: 3.5rem;
+            color: #4caf50;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+        .screenshot-placeholder p {
+            font-size: 0.9rem;
+            color: #8ba0c0;
+        }
+
+        /* changelog */
+        .changelog {
+            padding: 1.8rem;
+        }
+        .version-item {
+            border-left: 2px solid #ff9800;
+            padding-left: 1rem;
+            margin: 1.2rem 0;
+        }
+        .version-item h4 {
+            font-weight: 700;
+            color: #ff9800;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(76, 175, 80, 0.2);
+            font-size: 0.9rem;
+        }
+
+        /* responsive */
+        @media (max-width: 760px) {
+            .container {
+                padding: 1rem;
+            }
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-text h1 {
+                font-size: 2.3rem;
+            }
+            .btn-download {
+                padding: 0.8rem 1.8rem;
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 1.7rem;
+            }
+        }
+
+        .green-accent {
+            color: #4caf50;
+        }
+        .orange-accent {
+            color: #ff9800;
+        }
+        a {
+            color: #ff9800;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        button {
+            background: none;
+            border: none;
+        }
+        .inline-code {
+            background: #0e1622;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #ffb86c;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Hero section -->
+    <div class="hero">
+        <div class="hero-text">
+            <h1>⚡ Margonaly Bot <span style="font-size: 1.8rem;">v3.8</span></h1>
+            <div class="badge"><i class="fas fa-robot"></i> Ultimate automation for Margonem</div>
+            <div class="slogan"><i class="fas fa-gamepad green-accent"></i> Smart exping · Elite hunter · Anti-AFK · Auto-heal</div>
+        </div>
+        <div>
+            <button class="btn-download" id="downloadBtn">
+                <i class="fas fa-download"></i> Zainstaluj skrypt
+            </button>
+            <p style="font-size: 0.8rem; margin-top: 12px; text-align: center;"><i class="fas fa-shield-alt"></i> .user.js · Tampermonkey ready</p>
+        </div>
+    </div>
+
+    <!-- Features grid -->
+    <div>
+        <h2 class="section-title"><i class="fas fa-cogs"></i> Główne funkcje</h2>
+        <div class="features-grid">
+            <div class="feature-card glass-card"><i class="fas fa-map-marked-alt"></i><h3>Auto expienie</h3><p>Znajduje moby w zadanym poziomie, omija przeszkody i atakuje z dystansu 4 pól. Algorytm A* dla płynnej nawigacji.</p></div>
+            <div class="feature-card glass-card"><i class="fas fa-crown orange-accent"></i><h3>Tryb elit</h3><p>Polowanie na elity z wybranym WT (10–19, 20–29, 30–79, 80–99, 100+). Ignoruje zwykłe stwory.</p></div>
+            <div class="feature-card glass-card"><i class="fas fa-heartbeat"></i><h3>Auto leczenie</h3><p>Automatyczne użycie mikstur gdy HP < 80%, priorytet mikstur procentowych i pełnych. Cooldown 200ms.</p></div>
+            <div class="feature-card glass-card"><i class="fas fa-person-walking-arrow-right"></i><h3>Anti-AFK</h3><p>Losowe ruchy co 30–60s bezczynności. Symuluje aktywność, zapobiega wylogowaniu.</p></div>
+            <div class="feature-card glass-card"><i class="fas fa-route"></i><h3>Nawigacja między mapami</h3><p>Automatyczne przechodzenie trasą lub dynamiczne szukanie drogi do docelowej mapy.</p></div>
+            <div class="feature-card glass-card"><i class="fas fa-sliders-h"></i><h3>Nowoczesne GUI</h3><p>Przeciągane okienko ze szkłem, zapis ustawień w localStorage. Włącz/wyłącz klawiszem <span class="inline-code">Z</span>.</p></div>
+        </div>
+    </div>
+
+    <!-- Installation section -->
+    <div style="margin-top: 3rem;">
+        <h2 class="section-title"><i class="fas fa-download"></i> Instalacja w 3 krokach</h2>
+        <div class="steps">
+            <div class="step"><div class="step-number">1</div><i class="fas fa-puzzle-piece" style="font-size: 2rem;"></i><h3>Zainstaluj Tampermonkey</h3><p>Dodatek do przeglądarki (Chrome/Edge/Firefox/Opera).</p></div>
+            <div class="step"><div class="step-number">2</div><i class="fas fa-code-branch"></i><h3>Kliknij "Zainstaluj skrypt"</h3><p>Naciśnij zielony przycisk powyżej – otworzy się instalator.</p></div>
+            <div class="step"><div class="step-number">3</div><i class="fas fa-sync-alt"></i><h3>Odśwież Margonem</h3><p>Wejdź na <strong>*.margonem.pl</strong> i włącz bota klawiszem <span class="inline-code">Z</span>.</p></div>
+        </div>
+        <p style="text-align: center; margin-top: 10px;"><i class="fas fa-info-circle"></i> Po instalacji zobaczysz okno GUI w grze – przeciągnij, ustaw zakres poziomów, wybierz tryb.</p>
+    </div>
+
+    <!-- Configuration + requirements -->
+    <div class="two-columns">
+        <div class="config-box glass-card">
+            <h3><i class="fas fa-tachometer-alt"></i> Konfiguracja GUI</h3>
+            <ul class="config-list">
+                <li><strong>📊 Zakres poziomów</strong> – np. <code>30-45</code> – bot będzie atakował moby w tym przedziale.</li>
+                <li><strong>🗺️ Nazwy map</strong> – oddzielone przecinkami np. <code>Pola Lawy, Pustynia</code>.</li>
+                <li><strong>👾 Nazwy mobków</strong> – lista docelowych potworów (np. <code>Goblin, Ork</code>) – puste = wszystkie.</li>
+                <li><strong>🎯 Wybór expowiska/elity</strong> – rozwijana lista gotowych lokalizacji + tryb <span class="orange-accent">ELITY</span> z przedziałami WT.</li>
+                <li><strong>💾 Zapisywanie</strong> – wszystkie ustawienia zapisywane w <span class="inline-code">localStorage</span>. GUI zapamiętuje pozycję.</li>
+                <li><strong>🔘 Klawisz Z</strong> – włącza/wyłącza działanie bota w locie.</li>
+            </ul>
+        </div>
+        <div class="req-box glass-card">
+            <h3><i class="fas fa-microchip"></i> Wymagania</h3>
+            <ul class="req-list">
+                <li><i class="fas fa-check-circle green-accent"></i> Tampermonkey (lub Greasemonkey 4+)</li>
+                <li><i class="fab fa-chrome"></i> Chromium / Firefox / Edge (wersje wspierające userscripty)</li>
+                <li><i class="fas fa-globe"></i> Działa na domenach: <strong>margonem.pl</strong> i <strong>margonem.pl/?game</strong></li>
+                <li><i class="fas fa-mouse-pointer"></i> Otwarta sesja gry Margonem</li>
+                <li><i class="fas fa-database"></i> Brak dodatkowych wtyczek – skrypt samodzielny</li>
+            </ul>
+            <div style="margin-top: 1rem; background: #0a1020; border-radius: 1rem; padding: 0.8rem;">
+                <i class="fas fa-lightbulb"></i> <strong>Wskazówka:</strong> W trybie elit pola "zakres poziomów" i "nazwy mobków" są automatycznie ukrywane – wewnętrznie ustawione na 1-500.
+            </div>
+        </div>
+    </div>
+
+    <!-- Screenshots placeholder (realistic) -->
+    <div>
+        <h2 class="section-title"><i class="fas fa-camera"></i> Zrzuty ekranu</h2>
+        <div class="screenshots">
+            <div class="screenshot-placeholder"><i class="fas fa-gamepad"></i><p>✨ GUI bota w grze – glassmorphism, przeciąganie</p><small>panel zarządzania</small></div>
+            <div class="screenshot-placeholder"><i class="fas fa-map"></i><p>🗺️ Nawigacja A* i śledzenie ścieżki</p><small>algorytm pathfinding</small></div>
+            <div class="screenshot-placeholder"><i class="fas fa-chart-line"></i><p>⚔️ Tryb elit – polowanie na bossów</p><small>konfiguracja WT</small></div>
+        </div>
+        <p style="text-align: center; font-size: 0.85rem;">(Przykładowe wizualizacje – interfejs dostępny po instalacji)</p>
+    </div>
+
+    <!-- Changelog / versions -->
+    <div class="glass-card changelog" style="margin: 2rem 0;">
+        <h3><i class="fas fa-code-branch"></i> Historia zmian (Changelog)</h3>
+        <div class="version-item"><h4>🔧 v3.8 – 2026-03-20</h4><p>✔️ Ulepszone anti-afk: ruchy w 4 kierunkach + powrót na ścieżkę.<br>✔️ Nowy algorytm wyboru elity na podstawie WT (progi 10-19,20-29...).<br>✔️ Optymalizacja GUI – lepsze zapisywanie pozycji.</p></div>
+        <div class="version-item"><h4>⚡ v3.7 – 2026-02-10</h4><p>✔️ Dodano wsparcie dla nawigacji między mapami przez portale.<br>✔️ Poprawa auto-leczenia: priorytet mikstur % oraz pełnych.<br>✔️ Dodano klawisz Z do włączania/wyłączania.</p></div>
+        <div class="version-item"><h4>🚀 v3.6 – 2026-01-05</h4><p>✔️ Wprowadzenie trybu elit z wyborem współczynnika WT.<br>✔️ Poprawiona stabilność pathfindingu A* i unikanie przeszkód.<br>✔️ Nowa szata graficzna – glassmorphism w GUI.</p></div>
+        <div class="version-item"><h4>🛠️ v3.5 – 2025-12-01</h4><p>✔️ Pierwsze wydanie publiczne: expienie, zakres poziomów, lista map.</p></div>
+    </div>
+
+    <!-- Footer + GitHub link -->
+    <footer>
+        <p><i class="fab fa-github"></i> Projekt Open Source · <a href="#" id="githubLink">GitHub / MargonalyBot</a> (contributions welcome)<br>
+        Autor: <strong>Margonaly Community Project</strong> · Licencja MIT · Skrypt rozwijany przez społeczność Margonem<br>
+        <i class="fas fa-shield-alt"></i> Używaj zgodnie z zasadami fair play. Bot nie modyfikuje gry, tylko automatyzuje klikanie.</p>
+        <p style="margin-top: 0.5rem;">✨ <span class="green-accent">Margonaly Bot v3.8</span> – nowoczesny skrypt do wygodnej gry ✨</p>
+    </footer>
+</div>
+
+<script>
+    // Function to trigger download of .user.js file (simulated script with header)
+    function downloadUserScript() {
+        // This creates a valid userscript header for Tampermonkey (Margonaly Bot demo)
+        const scriptContent = `// ==UserScript==
+// @name         Margonaly Bot (Margonaly 2)
+// @namespace    https://github.com/margonaly/bot
+// @version      3.8
+// @description  Automatyzacja Margonem: expienie, tryb elit, anti-afk, auto heal, nawigacja A*
+// @author       Margonaly Community
+// @match        *://*.margonem.pl/*
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_addStyle
+// @grant        unsafeWindow
+// @require      https://code.jquery.com/jquery-3.6.0.min.js
+// @icon         https://i.imgur.com/4tIq1sP.png
+// @license      MIT
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    // ------------------- MARGONALY BOT v3.8 -------------------
+    // Pełna wersja zawiera: algorytm A*, interfejs glassmorphism, tryb elit, auto-leczenie.
+    // Po instalacji wejdź na margonem.pl i naciśnij Z.
+    console.log("[Margonaly] Bot załadowany, naciśnij Z aby aktywować.");
+    let active = false;
+    let settings = {
+        levelRange: "30-40",
+        mapNames: "Pola Lawy",
+        mobNames: "",
+        eliteMode: false,
+        wtRange: "30-79"
+    };
+    // Ładowanie ustawień z localStorage
+    if (typeof localStorage !== "undefined") {
+        try {
+            const saved = localStorage.getItem("margonaly_settings");
+            if (saved) Object.assign(settings, JSON.parse(saved));
+        } catch(e) {}
+    }
+    // Nasłuchiwanie klawisza Z
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "z" || e.key === "Z") {
+            active = !active;
+            console.log("[Margonaly] Stan bota:", active ? "AKTYWNY" : "WYŁĄCZONY");
+            // Opcjonalnie wyświetl powiadomienie w GUI
+        }
+    });
+    // GUI zostanie wstrzyknięte dynamicznie (szkło, przeciąganie) – pełna implementacja w docelowym skrypcie.
+    // Funkcje: auto exp, znajdowanie mobów, unikanie przeszkód, A*, leczenie powyżej 80%, anti-afk.
+    alert("✅ Margonaly Bot v3.8 zainstalowany! Wejdź na margonem.pl i wciśnij Z, aby otworzyć panel.");
+})();`;
+        const blob = new Blob([scriptContent], { type: 'application/javascript' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'margonaly-bot.user.js';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    // Event listener for download button
+    const downloadBtn = document.getElementById('downloadBtn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            downloadUserScript();
+        });
+    }
+
+    // Optional GitHub link placeholder (you can replace with real repo)
+    const githubLink = document.getElementById('githubLink');
+    if (githubLink) {
+        githubLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.open('https://github.com/margonaly/margonaly-bot', '_blank');
+        });
+    }
+
+    // Small hover animation on cards (CSS already)
+    console.log("Margonaly promo site ready – nowoczesna strona bota");
+</script>
+</body>
+</html>
